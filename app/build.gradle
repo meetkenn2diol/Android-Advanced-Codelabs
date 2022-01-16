@@ -1,0 +1,306 @@
+plugins {
+    id 'com.android.application'
+    id 'kotlin-android'
+    //Kotling Parcelization plugin
+    id 'kotlin-parcelize'
+    //Plugin for Room,DataBinding
+    id 'kotlin-kapt'
+    //Navigation plugin for safeargs-kotlin
+    //The Safe Args plugin generates a //NavDirection class for each Fragment. //These classes represent navigation from //all the app's actions.
+    //For example,a GameFragment now has a //generated GameFragmentDirections class.
+    //id 'androidx.navigation.safeargs.kotlin': this is buggy for now
+    id 'androidx.navigation.safeargs'
+    //Dagger plugin
+    // id 'dagger.hilt.android.plugin'
+
+    // Add the following line to the bottom of the file:
+    id 'com.google.gms.google-services'  // Google Play services Gradle plugin
+}
+
+android {
+    compileSdkVersion 31
+    buildToolsVersion "32.0.0"
+
+    buildFeatures {
+        compose true
+        viewBinding true
+        dataBinding true
+    }
+    composeOptions {
+        kotlinCompilerExtensionVersion "$compose_version"
+    }
+    defaultConfig {
+        //com.example.android.dependencies: is the applicationId because of the google_services.gson file
+        applicationId "com.codelabs.state.firebaseui_login_demo"
+        minSdkVersion 21
+        targetSdkVersion 31
+        versionCode 1
+        versionName "1.0"
+        vectorDrawables.useSupportLibrary = true
+        //important to reduce app size when using vector Images
+
+        testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
+
+
+        // Consult the README on instructions for setting up Unsplash API key
+        buildConfigField("String", "UNSPLASH_ACCESS_KEY", "\"" + getUnsplashAccess() + "\"")
+        /*  javaCompileOptions {
+              annotationProcessorOptions {
+                  arguments["dagger.hilt.disableModulesHaveInstallInCheck"] = "true"
+              }
+          }*/
+    }
+
+    buildTypes {
+        release {
+            minifyEnabled false
+            proguardFiles
+            proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
+        }
+    }
+    //kapt
+
+    // annotationProcessor
+    kapt {
+        correctErrorTypes = true
+        arguments {
+            arg("room.schemaLocation", "$projectDir/schemas")
+        }
+    }
+    compileOptions {
+        sourceCompatibility JavaVersion.VERSION_1_8
+        targetCompatibility JavaVersion.VERSION_1_8
+    }
+    kotlinOptions {
+        // work-runtime-ktx 2.1.0 and above now requires Java 8
+        jvmTarget = "1.8"
+
+        // Enable Coroutines and Flow APIs
+        freeCompilerArgs += "-Xopt-in=kotlinx.coroutines.ExperimentalCoroutinesApi"
+        freeCompilerArgs += "-Xopt-in=kotlinx.coroutines.FlowPreview"
+    }
+    packagingOptions {
+        // Multiple dependency bring these files in. Exclude them to enable
+        // our test APK to build (has no effect on our AARs)
+        excludes += "/META-INF/AL2.0"
+        excludes += "/META-INF/LGPL2.1"
+    }
+    sourceSets {
+        main.java.srcDirs += 'src/main/kotlin'
+        // main.jniLibs.srcDirs = ["libs"]
+    }
+    testOptions.unitTests {
+        //Add Idling Resource to your Gradle file
+        includeAndroidResources = true
+        returnDefaultValues = true
+    }
+    // ndkVersion '203.7717.56.2031.7935034'
+}
+
+
+dependencies {
+    //region ::: Timber logging Wander
+    implementation 'com.jakewharton.timber:timber:4.7.1'
+    implementation 'com.github.ajalt:timberkt:1.5.1'
+    //endregion
+    //region Joda time library for dealing with time
+    implementation 'joda-time:joda-time:2.10'
+    //endregion
+    //region Client for retrieving location
+    implementation "com.google.android.gms:play-services-location:19.0.1"
+    //endregion
+    //region ::: Android legacy support
+    implementation fileTree(dir: 'libs')
+    implementation 'androidx.legacy:legacy-support-v4:1.0.0'
+    //endregion
+    //region :::Coroutines
+    implementation "org.jetbrains.kotlinx:kotlinx-coroutines-android:$coroutines_version"
+    implementation "org.jetbrains.kotlinx:kotlinx-coroutines-core:$coroutines_version"
+    implementation 'com.google.android.gms:play-services-maps:18.0.2'
+    //endregion
+    //region :::Testing
+    testImplementation "androidx.test:rules:$test_rules_version"
+    testImplementation "androidx.test.ext:truth:$test_rules_version"
+    androidTestImplementation "com.google.truth:truth:$truth_version"
+    androidTestImplementation "androidx.test:runner:$test_rules_version"//info
+    androidTestImplementation "androidx.arch.core:core-testing:$coreTesting_version"
+    androidTestImplementation "androidx.test:core:$test_rules_version"
+    androidTestImplementation "androidx.test.espresso:espresso-contrib:$espresso_version"
+    androidTestImplementation "androidx.test.espresso:espresso-core:$espresso_version"
+    androidTestImplementation "androidx.test.espresso:espresso-intents:$espresso_version"
+    androidTestImplementation "androidx.test.espresso:espresso-accessibility:$espresso_version"
+    androidTestImplementation "androidx.test.espresso:espresso-web:$espresso_version"
+    androidTestImplementation "androidx.test.espresso.idling:idling-concurrent:$espresso_version"
+    implementation "androidx.test.espresso:espresso-idling-resource:$espresso_version"
+    androidTestImplementation "androidx.test.ext:junit:$junit_ext_version"
+    androidTestImplementation "androidx.test.uiautomator:uiautomator:$uiAutomator_version"
+    androidTestImplementation "androidx.work:work-testing:$work_version"
+    // androidTestImplementation "com.google.dagger:hilt-android-testing:$hilt_version"
+    androidTestImplementation "androidx.navigation:navigation-testing:$nav_version"
+    androidTestImplementation "com.google.truth:truth:$truth_version"
+    androidTestImplementation "org.jetbrains.kotlinx:kotlinx-coroutines-test:$coroutines_version"
+    //  kaptAndroidTest "com.google.dagger:hilt-android-compiler:$hilt_version"
+    androidTestImplementation "junit:junit:$junit_version"
+    testImplementation "org.mockito:mockito-core:$mockito_version"
+    testImplementation "org.mockito:mockito-inline:$mockito_version"
+    implementation "androidx.test:core-ktx:$test_rules_version"
+    testImplementation "androidx.test.ext:junit-ktx:$test_rules_version_ktx"
+    testImplementation "org.robolectric:robolectric:$robo_electric_version"
+    //endregion
+    //region :::Android Kotlin
+    implementation "org.jetbrains.kotlin:kotlin-stdlib:$kotlin_version"
+    implementation "org.jetbrains.kotlin:kotlin-reflect:$kotlin_version"
+    implementation "androidx.core:core-ktx:$corektx_version"
+    //endregion
+    //region :::AppCompat
+    implementation "androidx.appcompat:appcompat:$appCompat_version"
+    //endregion
+    //region :::Material Design
+    implementation "com.google.android.material:material:$material_version"
+    //endregion
+    //region :::Constraintlayout
+    implementation "androidx.constraintlayout:constraintlayout:$constraintLayout_version"
+    //endregion
+    //region :::Room
+    kapt "androidx.room:room-compiler:$room_version"
+    implementation "androidx.room:room-runtime:$room_version"
+    implementation "androidx.room:room-ktx:$room_version"
+    //endregion
+    //region :::=Lifecycle management =
+    implementation "androidx.lifecycle:lifecycle-livedata-ktx:$lifecycle_version"
+    implementation "androidx.lifecycle:lifecycle-viewmodel-ktx:$lifecycle_version"
+    implementation "androidx.lifecycle:lifecycle-viewmodel-compose:$lifecycleCompose_version"
+    implementation "androidx.lifecycle:lifecycle-runtime-ktx:$lifecycle_version"
+    implementation "androidx.lifecycle:lifecycle-viewmodel-savedstate:$lifecycle_version"
+    //endregion
+    //region :::RecyclerView
+    implementation "androidx.recyclerview:recyclerview:$recyclerview_version"
+    //endregion
+    //region :::SquareUp libraries
+    //region :::Retrofit
+    implementation "com.squareup.retrofit2:retrofit:$retrofit2_version"
+    implementation "com.squareup.retrofit2:converter-scalars:$retrofit2_version"
+    // Retrofit Coroutines Support
+    implementation "com.jakewharton.retrofit:retrofit2-kotlin-coroutines-adapter:$retrofit2_coroutines_adapter_version"
+    //endregion
+    //region :::Gson Wander
+    implementation 'com.google.code.gson:gson:2.8.6'
+    implementation "com.squareup.retrofit2:converter-gson:$retrofit2_version"
+    implementation "com.squareup.retrofit2:converter-moshi:$retrofit2_version"
+    //endregion
+    //region :::MOSHI DEPENDENCIES
+    implementation "com.squareup.moshi:moshi-kotlin:$moshi_version"
+    implementation "com.squareup.moshi:moshi:$moshi_version"
+    implementation "com.squareup.moshi:moshi-kotlin:$moshi_version"
+    kapt "com.squareup.moshi:moshi-kotlin-codegen:$moshi_version"
+    //endregion
+    //region :::Mock Wander
+    implementation "com.squareup.retrofit2:retrofit-mock:$retrofit2_version"
+    //endregion
+    //region :::Okhttp3 Wander
+    implementation "com.squareup.okhttp3:logging-interceptor:$okhttp3Logging_version"
+    //endregion
+    //endregion
+    //region :::Manager
+    implementation "androidx.work:work-runtime:$work_version"
+    implementation "androidx.work:work-runtime-ktx:$work_version"
+    //endregion
+    //region :::Browser
+    implementation "androidx.browser:browser:$androidxBrowser_version"
+    //endregion
+    //region :::NAVIGATION GRAPH DEPENDENCIES
+    implementation "androidx.navigation:navigation-compose:$navCompose_version"
+    //endregion
+    //region::: Kotlin
+    implementation "androidx.navigation:navigation-fragment-ktx:$nav_version"
+    implementation "androidx.navigation:navigation-ui-ktx:$nav_version"
+    //endregion
+    //region::: Feature module Support
+    implementation "androidx.navigation:navigation-dynamic-features-fragment:$nav_version"
+    //endregion
+    //region :::Activity
+    implementation "androidx.activity:activity-ktx:$androidxActivity_version"
+    //endregion
+    //region :::FRAGMENT FUNCTIONALITY
+    implementation "androidx.fragment:fragment-ktx:$fragment_version"
+    debugImplementation "androidx.fragment:fragment-testing:$fragment_version"
+    //endregion
+    //region :::PAGING DEPENDENCIES
+    implementation "androidx.paging:paging-runtime-ktx:$paging_version"
+    implementation "androidx.paging:paging-rxjava3:$paging_version"
+    //endregion
+    //region :::PREFERENCES DEPENDENCIES=
+    implementation "androidx.preference:preference:$preference_version"
+    implementation "androidx.preference:preference-ktx:$preference_version"
+    //endregion
+    //region :::GLIDE DEPENDENCIES=
+    annotationProcessor "com.github.bumptech.glide:compiler:$glide_version"
+    implementation "com.github.bumptech.glide:glide:$glide_version"
+    implementation "jp.co.cyberagent.android:gpuimage:$cyberagent_version"
+    implementation "jp.wasabeef:glide-transformations:$glide_transf_version"
+    kapt "com.github.bumptech.glide:compiler:$glide_version"
+    //endregion
+    //region ::: Dagger Wander
+    kapt "com.google.dagger:hilt-android-compiler:$hilt_version"
+    implementation "com.google.dagger:hilt-android:$hilt_version"
+    //endregion
+    //region :::Paging
+    implementation "androidx.paging:paging-runtime-ktx:$paging_version"
+    //endregion
+    //region :::=ViewPager2
+    implementation "androidx.viewpager2:viewpager2:$viewPager_version"
+    //endregion
+    //region for FIREBASE
+    /**Using Firebase Bom
+     *Note that if you use multiple Firebase libraries in your app, we highly recommend using the BoM to manage library versions, which ensures that all versions are compatible.
+     * <
+     *implementation platform('com.google.firebase:firebase-bom:29.0.3')
+     implementation 'com.google.firebase:firebase-auth-ktx'
+     implementation 'com.google.firebase:firebase-core'
+     implementation 'com.google.firebase:firebase-iid'
+     implementation 'com.google.android.gms:play-services-auth:20.0.1'
+     * >
+     */
+    implementation 'com.google.firebase:firebase-auth:21.0.1'
+    implementation 'com.google.firebase:firebase-core:20.0.2'
+    implementation 'com.google.firebase:firebase-iid:21.1.0'
+    implementation 'com.google.firebase:firebase-messaging:23.0.0'
+    implementation 'com.google.firebase:firebase-bom:29.0.3'
+    implementation 'com.google.firebase:firebase-auth-ktx:21.0.1'
+    implementation 'com.google.firebase:firebase-database-ktx:20.0.3'
+    implementation 'com.google.firebase:firebase-firestore-ktx:24.0.0'
+    implementation 'com.firebaseui:firebase-ui-auth:8.0.0'
+    implementation 'com.firebaseui:firebase-ui-database:8.0.0'
+    //when using bom, don't add version number
+    implementation 'com.google.firebase:firebase-analytics-ktx:20.0.2'
+    //endregion
+    //region::: Compose
+    implementation "androidx.compose.ui:ui:$compose_version"
+    implementation "androidx.compose.material:material:$compose_version"
+    implementation "androidx.compose.ui:ui-tooling:$compose_version"
+    implementation "androidx.activity:activity-compose:$activity_compose_version"
+    implementation "androidx.compose.animation:animation:$compose_version"
+    implementation "androidx.compose.foundation:foundation:$compose_version"
+    implementation "androidx.compose.foundation:foundation-layout:$compose_version"
+    implementation "androidx.compose.material:material-icons-extended:$compose_version"
+    implementation "androidx.compose.runtime:runtime-livedata:$compose_version"
+    implementation "androidx.compose.runtime:runtime:$compose_version"
+    implementation "androidx.compose.compiler:compiler:$compose_version"
+    //endregion
+    //region GPUImage
+    implementation 'jp.co.cyberagent.android:gpuimage:2.0.4'
+    //endregion
+
+    //region::: Dealing with Forex
+    implementation('io.socket:socket.io-client:2.0.1') {
+        //excluding org.json which is provided by Android
+        exclude group: 'org.json', module: 'json'
+    }
+    //1forge: a third party library
+    implementation 'com.github.1forge:java-forex-quotes:1.0.4'
+    //endregion
+}
+
+def getUnsplashAccess() {
+    return project.findProperty("unsplash_access_key")
+}

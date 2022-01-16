@@ -1,0 +1,70 @@
+info When thinking about a testing strategy, there are three related testing aspects:
+1. Scope—How much of the code does the test touch?
+2. Speed—How fast does the test run?
+3. Fidelity—How "real-world" is the test?
+
+info One common way to divide automated tests is into these three categories:
+1. Unit tests—These are highly focused tests that run on a single class
+2. Integration tests—These test the interaction of several classes. One way to structure integration tests is to have them test a single feature
+3. End to end tests (E2e)—Test a combination of features working together. This test will most likely be an instrumented test(in the androidTest source set)
+
+info: The ratio of tests in your project should be
+Unit Tests: 70%
+Integrated tests: 20%
+E2e tests: 10%
+
+info: A test double is a version of a class crafted specifically for testing
+
+info: When you're in test classes, meaning classes with @Test functions , use 'runBlockingTest' to get deterministic behavior. Otherwise use 'runBlocking'.
+
+info: As a general rule of thumb, if you are testing something visual(e.g Fragment, Activity, View...), run it as an instrumented test.
+
+info: @MediumTest—Marks the test as a "medium run-time" integration test (versus @SmallTest unit tests and @LargeTest end-to-end tests). This helps you group and choose which size of test to run.
+
+info:  'FragmentScenario' is a class from AndroidX Test that wraps around a fragment and gives you direct control over the fragment's lifecycle for testing.
+
+info: You can't use constructor dependency injection for classes you don't have access to it's constructor e.g activity, fragment. use the 'Service Locator' pattern. The Service Locator pattern is an alternative to Dependency Injection.
+
+info:  One of the downsides of using a service locator is that it is a shared singleton. Hence use dependency injection when you can.
+
+Espresso helps you:
+Interact with views, like clicking buttons, sliding a bar, or scrolling down a screen.
+Assert that certain views are on screen or are in a certain state (such as containing particular text, or that a checkbox is checked, etc.)
+
+For Espresso UI testing and Databinding, it's best practice to turn animations off (also your test will run faster!):If an animation lags and you try to test if a view is on screen, but it's still animating, Espresso can accidentally fail a test. This can make Espresso tests flaky.
+
+info: The majority of Espresso statements are made up of four parts:
+ 1. Static Espresso method: e.g onView,onData
+ 2. ViewMatcher: e.g withId(R.id.task_detail_title_text)
+ 3. ViewAction: e.g performClick()
+ 4. ViewAssertion: e.g check(matches(isChecked()))
+
+To test code that includes suspend functions, you need to do the following:
+    1.Add the kotlinx-coroutines-test test dependency to your app's build.gradle file.
+    2.Annotate the test class or test function with @ExperimentalCoroutinesApi.
+    3.Surround the code with 'runBlockingTest', so that your test waits for the coroutine to finish. This will also make sure that the codes are run in a deterministic order
+    4.Writing test doubles, use 'runBlocking': This feature is not experimental
+
+info:  A CoroutineDispatcher controls how a coroutine runs, including what thread the coroutine code runs on
+
+Note that in general, make database tests instrumented tests, meaning they will be in the androidTest source set. This is because if you run these tests locally, they will use whatever version of SQLite you have on your local machine, which could be very different from the version of SQLite that ships with your Android device!
+
+info: Here are a few differences between end-to-end tests and integration tests relating to the Todo app. E2E tests:
+      1.Start the app from the first screen.
+      2. Create an actual activity and repository.
+      3. Test multiple fragments working together.
+
+Note that in this end-to-end test, you don't verify integration with the repository, the navigation controller, or any other components at all. This is what's known as a black box test. The test is not supposed to know how things are implemented internally, only the outcome for a given input.
+
+info: the idling resource synchronization mechanism. This is a way to explicitly tell Espresso when the app is idle (meaning Espresso should continue interacting with and checking the app) or not (meaning Espresso should wait).
+
+
+
+
+
+
+
+
+
+
+
