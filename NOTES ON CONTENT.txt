@@ -1,0 +1,174 @@
+This is a collection of various app projects i did during the Android Codelabs tutorial
+.
+For the full folders in the 'src' folder, check 'Android Testing'
+
+
+
+============APP: TRACK MY SLEEP QUALITY
+Architecture Used:
+DataBinding
+Timer
+SharedPreferences
+Database
+Recycler view
+
+
+Some tactics:
+Repository
+
+============APP: MARS REAL ESTATE
+Architecture Used:
+Glide
+MenuItem
+Room
+Navigation
+Repository
+DataBinding
+RecyclerView
+Retrofit
+Moshi
+
+
+Some tactics:
+Caching
+
+============APP: EGG TIMER NOTIFICATION - WITH FIREBASE
+Architecture Used:
+DataBinding
+Fab icon
+Notification
+Broadcast Receiver
+Alarm Manager
+Timer
+SharedPreferences
+Firebase
+
+
+Some tactics:
+
+============APP: DEVBYTEVIEWER
+Architecture Used:
+Glide
+MenuItem
+Room
+Repository
+DataBinding
+RecyclerView
+Retrofit
+Moshi
+
+
+Some tactics:
+Concatenating string
+Caching
+Various Retrofit query
+
+
+============APP: GDG FINDER
+Architecture Used:
+Glide
+MenuItem
+Room
+Repository
+DataBinding
+RecyclerView
+Retrofit
+Moshi
+chips
+Fab icon
+Navigation Drawer
+Navigation
+Permissions Setting
+
+
+Some tactics:
+Concatenating string
+Caching
+Various Retrofit query
+fonts
+Theme-ing
+
+
+============APP: CUSTOM VIEWS
+Architecture Used:
+Views
+DataBinding
+
+
+
+Some tactics:
+Canvas Drawing
+
+
+============APP: ANDROID ANIMATION
+Architecture Used:
+XML editing
+RecyclerView
+Motion Layout
+
+
+Some tactics:
+Android animation usage
+
+
+
+============APP: WANDER and TREASUREHUNT
+Architecture Used:
+MenuItem
+DataBinding
+Permissions Setting
+Google Map usage
+
+
+Some tactics:
+Geo Fencing
+
+
+============APP: Android Testing
+Architecture Used:
+Glide
+MenuItem
+Room
+Repository
+DataBinding
+RecyclerView
+Retrofit
+Moshi
+Timber
+Coroutines
+
+
+Some tactics:
+Testing fragments
+ServiceLocator
+JUnit rule
+Doubles and Dependency injection
+Task: Coroutines and ViewModels
+Task: Testing Coroutine Timing
+Task: End-to-End App Navigation Testing
+Task: End-to-End Testing with Data Binding
+Task: Testing Room
+
+
+============APP: Firebaseui-login-sample
+Architecture Used:
+Room
+Repository
+DataBinding
+Retrofit
+Moshi
+Coroutines
+Settings Preferences
+Navigation
+ViewPager2
+
+
+Some tactics:
+Firebase Login
+Firebase Testing
+Livedata class
+Conditional Navigation
+handling onBackPressedDispatcher
+popBackStack
+
+

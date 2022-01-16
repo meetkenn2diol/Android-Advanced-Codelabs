@@ -1,0 +1,2 @@
+include ':app'
+rootProject.name = "firebaseui_login_sample"
