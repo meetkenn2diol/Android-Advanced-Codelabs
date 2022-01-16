@@ -1,0 +1,16 @@
+<resources>
+    <string name="app_name">Guess the Word</string>
+    <string name="skip">Skip</string>
+    <string name="play_again">Play Again</string>
+    <string name="you_scored">You Scored</string>
+    <string name="title_text">guess the word!</string>
+    <string name="play_button">Play</string>
+    <string name="get_ready">Get ready to</string>
+    <string name="got_it">Got it</string>
+    <string name="end_game">End game</string>
+    <string name="word_is">The word is…</string>
+    <string name="quote_format">\"%s\"</string>
+    <string name="score_format">Current Score: %d</string>
+    <string name="game_finished_message">Game has just finished</string>
+    <string name="word_hint">Current word has %1$d letters.&#xA;The letter at position %2$d is %3$s.</string>
+</resources>
